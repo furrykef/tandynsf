@@ -1,0 +1,2 @@
+@cmplogs.py
+@pause

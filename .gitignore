@@ -1,0 +1,11 @@
+syntax: glob
+*.nsf
+*.NSF
+*.exe
+*.com
+*.obj
+*.map
+*.bak
+6502log.txt
+fceux.log
+LOGCPU.TXT
