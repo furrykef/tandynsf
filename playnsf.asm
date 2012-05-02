@@ -304,13 +304,6 @@ LoadSong:
 
 ; Play one frame's worth of audio
 PlayFrame:
-        ; Wait for vblank (assume CGA video here)
-        mov     dx, 0x03da
-.wait_for_vblank:
-        in      al, dx
-        test    al, 8
-        jz      .wait_for_vblank
-
         ; Clear regs (not supposed to be necessary, but aids debugging)
         xor     ax, ax                      ; AL = A, AH = P
         xor     dx, dx                      ; DL = X, DH = Y
@@ -326,11 +319,15 @@ PlayFrame:
         HandleChannel 2
         HandleChannel 3
 
-        ; Wait for vblank to end
-        ; This is needed in case vblank hasn't ended by the time we get
-        ; to the next wait for vblank earlier in the routine, in which
-        ; case the wait will be skipped and the timing will be screwy.
+        ; Wait for vblank if it isn't already (or still) going
+        ; (we assume CGA video here)
         mov     dx, 0x03da
+.wait_for_vblank:
+        in      al, dx
+        test    al, 8
+        jz      .wait_for_vblank
+
+        ; Now wait for it to end
 .wait_for_vblank_end:
         in      al, dx
         test    al, 8
@@ -364,7 +361,10 @@ GoToPrevSong:
         mov     ax, VarsSeg
         mov     ds, ax
         mov     al, [CurrentSong]
-        dec     ax
+        ; Earlier I had DEC AX instead of DEC AL because the 16-bit
+        ; instruction is smaller and faster. But this breaks the JNS
+        ; because the sign flag is set to AH's sign bit instead of AL's.
+        dec     al
         jns     .done
         ; Chose previous song while playing first song
         ; Go to last song

@@ -272,10 +272,6 @@ Run6502:
         jmp     [CS:OpcodeJmpTbl+bx]
 
 
-OpNotImplemented:
-        mov     dx, NotImplementedMsg
-        jmp     PrintErrorAndQuit
-
 OpInvalid:
         mov     dx, InvalidOpMsg
         jmp     PrintErrorAndQuit
@@ -465,7 +461,8 @@ OpBPL:
 
 
 OpBRK:
-        jmp     OpNotImplemented
+        mov     dx, UnexpectedBrkMsg
+        jmp     PrintErrorAndQuit
 
 
 OpBVC:
@@ -1080,7 +1077,8 @@ OpROR_abs_x:
 
 
 OpRTI:
-        jmp     OpNotImplemented
+        mov     dx, UnexpectedRtiMsg
+        jmp     PrintErrorAndQuit
 
 
 OpRTS:
@@ -1541,5 +1539,6 @@ ZeroNegTbl:
 
 segment VarsSeg
 
-NotImplementedMsg:  db      "Unimplemented opcode encountered$"
-InvalidOpMsg:       db      "Invalid opcode encountered$"
+UnexpectedBrkMsg:   db      "Unexpected BRK encountered$"
+UnexpectedRtiMsg:   db      "Unexpected RTI encountered$"
+InvalidOpMsg:       db      "Illegal opcode encountered$"
