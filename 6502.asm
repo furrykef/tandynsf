@@ -989,7 +989,9 @@ OpROL_zp:
         ; would be overwritten when we pop AX.
         push    dx
         mov     dl, [bx]
+        push    bx              ; ROL_body smashes bx
         ROL_body dl
+        pop     bx
         mov     [bx], dl
         pop     dx
         jmp     Run6502
@@ -998,7 +1000,9 @@ OpROL_zp_x:
         HandleZP_X
         push    dx
         mov     dl, [bx]
+        push    bx              ; ROL_body smashes bx
         ROL_body dl
+        pop     bx
         mov     [bx], dl
         pop     dx
         jmp     Run6502
@@ -1007,7 +1011,9 @@ OpROL_abs:
         HandleABS
         push    dx
         mov     dl, [bx]
+        push    bx              ; ROL_body smashes bx
         ROL_body dl
+        pop     bx
         mov     [bx], dl
         pop     dx
         jmp     Run6502
@@ -1016,7 +1022,9 @@ OpROL_abs_x:
         HandleABS_X
         push    dx
         mov     dl, [bx]
+        push    bx              ; ROL_body smashes bx
         ROL_body dl
+        pop     bx
         mov     [bx], dl
         pop     dx
         jmp     Run6502
@@ -1030,7 +1038,9 @@ OpROR_zp:
         HandleZP
         push    dx
         mov     dl, [bx]
+        push    bx              ; ROR_body smashes bx
         ROR_body dl
+        pop     bx
         mov     [bx], dl
         pop     dx
         jmp     Run6502
@@ -1039,7 +1049,9 @@ OpROR_zp_x:
         HandleZP_X
         push    dx
         mov     dl, [bx]
+        push    bx              ; ROR_body smashes bx
         ROR_body dl
+        pop     bx
         mov     [bx], dl
         pop     dx
         jmp     Run6502
@@ -1048,7 +1060,9 @@ OpROR_abs:
         HandleABS
         push    dx
         mov     dl, [bx]
+        push    bx              ; ROR_body smashes bx
         ROR_body dl
+        pop     bx
         mov     [bx], dl
         pop     dx
         jmp     Run6502
@@ -1057,7 +1071,9 @@ OpROR_abs_x:
         HandleABS_X
         push    dx
         mov     dl, [bx]
+        push    bx              ; ROR_body smashes bx
         ROR_body dl
+        pop     bx
         mov     [bx], dl
         pop     dx
         jmp     Run6502
