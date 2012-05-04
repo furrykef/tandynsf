@@ -6,13 +6,12 @@
 
 
 global NotImplementedMsg
-global InvalidOpMsg
 global PrintErrorAndQuit
 
 extern Run6502
 
 
-; High nybble must be D; lower nybble is volume (0 = max)
+; High nybble must be D; low nybble is volume (0 = max)
 TRIANGLE_VOLUME     equ 0xD8
 
 
@@ -36,8 +35,8 @@ PORT_SOUND          equ 0xc0
         ; Use most significant bits of 2A03 noise freq as SN76489's noise freq
         mov     al, [0x400e]
         and     al, 0b1100
-        shl     al, 1
-        shl     al, 1
+        shr     al, 1
+        shr     al, 1
         ; @TODO@ -- allow periodic noise?
         or      al, 0b11100100                ; Tell the SN which channel, and force white noise
 
@@ -484,8 +483,8 @@ PrintASCIIZ:
         cld
 .loop:
         lodsb
-        cmp     al, 0
-        je      .done
+        or      al, al
+        jz      .done
         cmp     al, 0xff
         je      .write_with_bios
         mov     dl, al
